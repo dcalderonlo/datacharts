@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: '/overview', label: 'Overview', icon: '⊞' },
   { href: '/analytics', label: 'Analytics', icon: '📊' },
   { href: '/reports', label: 'Reports', icon: '📋' },
+  { href: '/alerts', label: 'Alerts', icon: '🔔' },
 ]
 
 interface NavSidebarProps {

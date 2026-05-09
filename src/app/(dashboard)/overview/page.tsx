@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { IndexTable } from '@/ui/organisms/IndexTable'
 import { QuotePanel } from '@/ui/organisms/QuotePanel'
+import { WatchlistPanel } from '@/ui/organisms/WatchlistPanel'
 import { ApiErrorBoundary } from '@/ui/organisms/ApiErrorBoundary'
 import { Card } from '@/ui/atoms/Card'
 import { Spinner } from '@/ui/atoms/Spinner'
@@ -54,15 +55,19 @@ export default function OverviewPage() {
         </Suspense>
       </section>
 
-      {/* Quote Panel */}
-      <section>
-        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">Live Quote</h2>
-        <div className="max-w-md">
+      {/* Quote + Watchlist row */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">Live Quote</h2>
           <Card>
             <ApiErrorBoundary>
               <QuotePanel />
             </ApiErrorBoundary>
           </Card>
+        </div>
+        <div>
+          <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">My Watchlist</h2>
+          <WatchlistPanel />
         </div>
       </section>
     </div>

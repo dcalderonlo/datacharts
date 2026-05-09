@@ -1,0 +1,15 @@
+import { NextResponse } from 'next/server'
+import { auth } from '@/auth'
+import { prisma } from '@/infrastructure/db/prisma'
+
+export async function PATCH() {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  await prisma.notification.updateMany({
+    where: { userId: session.user.id, read: false },
+    data: { read: true },
+  })
+  return NextResponse.json({ success: true })
+}

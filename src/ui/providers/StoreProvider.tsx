@@ -2,13 +2,24 @@
 import { createContext, useContext, useRef, type ReactNode } from 'react'
 import { useStore } from 'zustand'
 import { createStore, type RootStore, type StoreType } from '@/store'
+import { usePushNotifications } from '@/ui/hooks/usePushNotifications'
 
 const StoreContext = createContext<StoreType | null>(null)
+
+function PushRegistrar() {
+  usePushNotifications()
+  return null
+}
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const storeRef = useRef<StoreType | null>(null)
   if (!storeRef.current) storeRef.current = createStore()
-  return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
+  return (
+    <StoreContext.Provider value={storeRef.current}>
+      <PushRegistrar />
+      {children}
+    </StoreContext.Provider>
+  )
 }
 
 export function useAppStore<T>(selector: (state: RootStore) => T): T {
