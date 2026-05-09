@@ -1,101 +1,70 @@
-import Image from "next/image";
+import { PublicNavBar } from '@/ui/organisms/PublicNavBar'
+import { LandingSearch } from '@/ui/organisms/LandingSearch'
 
-export default function Home() {
+const PREVIEW_INDICES = [
+  { name: 'S&P 500', value: '5,248.94', change: '+0.35%', positive: true },
+  { name: 'NASDAQ', value: '16,400.20', change: '-0.25%', positive: false },
+  { name: 'DOW JONES', value: '39,142.30', change: '+0.26%', positive: true },
+]
+
+export default function RootPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen bg-gray-950 text-white">
+      <PublicNavBar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+      {/* Hero */}
+      <section className="max-w-4xl mx-auto px-6 pt-24 pb-16 text-center">
+        <h1 className="text-5xl font-extrabold tracking-tight mb-4">dataCharts</h1>
+        <p className="text-xl text-gray-400 mb-10">
+          Real-time market data, portfolio watchlists, and price alerts — all in one place.
+        </p>
+
+        {/* Anonymous search */}
+        <LandingSearch />
+
+        <div className="mt-10 flex justify-center gap-4">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/login"
+            className="px-6 py-3 rounded-lg border border-gray-700 text-gray-300 hover:text-white hover:border-gray-500 transition"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            Sign In
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/register"
+            className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition"
           >
-            Read our docs
+            Create Account
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Market indices preview */}
+      <section className="max-w-4xl mx-auto px-6 pb-16">
+        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4 text-center">
+          Live Market Snapshot
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {PREVIEW_INDICES.map((idx) => (
+            <div
+              key={idx.name}
+              className="bg-gray-900 border border-gray-800 rounded-xl p-5 text-center"
+            >
+              <p className="text-sm text-gray-400 mb-1">{idx.name}</p>
+              <p className="text-2xl font-bold text-white">{idx.value}</p>
+              <p className={`text-sm mt-1 font-medium ${idx.positive ? 'text-green-400' : 'text-red-400'}`}>
+                {idx.change}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Ad placeholder */}
+      <section className="max-w-4xl mx-auto px-6 pb-16">
+        <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/50 h-20 flex items-center justify-center">
+          <span className="text-xs text-gray-600 uppercase tracking-widest">Advertisement</span>
+        </div>
+      </section>
     </div>
-  );
+  )
 }

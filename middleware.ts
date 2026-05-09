@@ -1,0 +1,54 @@
+import { auth } from './src/auth'
+import { NextResponse, type NextRequest } from 'next/server'
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+function parseCookieInt(req: NextRequest, name: string): number {
+  const raw = req.cookies.get(name)?.value
+  const n = parseInt(raw ?? '0', 10)
+  return isNaN(n) ? 0 : n
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default auth((req: any) => {
+  const { pathname } = req.nextUrl as URL
+  const isLoggedIn = !!req.auth
+
+  // Anonymous search rate limiting on GET /api/market/quotes
+  if (pathname === '/api/market/quotes' && req.method === 'GET' && !isLoggedIn) {
+    const today = todayStr()
+    const cookieDate = req.cookies.get('anon_search_date')?.value ?? ''
+    const searchCount = cookieDate === today ? parseCookieInt(req, 'anon_search_count') : 0
+
+    if (searchCount >= 3) {
+      return NextResponse.json(
+        { error: 'Search limit reached', code: 'ANON_LIMIT' },
+        { status: 429 }
+      )
+    }
+
+    const res = NextResponse.next()
+    const newCount = searchCount + 1
+    res.cookies.set('anon_search_count', String(newCount), { httpOnly: true, path: '/', maxAge: 86400 })
+    res.cookies.set('anon_search_date', today, { httpOnly: true, path: '/', maxAge: 86400 })
+    return res
+  }
+
+  // Dashboard routes require authentication
+  const isDashboard =
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/overview') ||
+    pathname.startsWith('/analytics') ||
+    pathname.startsWith('/reports') ||
+    pathname.startsWith('/alerts')
+
+  if (isDashboard && !isLoggedIn) {
+    return NextResponse.redirect(new URL('/login', req.nextUrl))
+  }
+})
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+}

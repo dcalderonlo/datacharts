@@ -1,0 +1,66 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Tech stack: Greenfield project — stack not yet defined
+  Architecture: To be determined
+  Testing: No test runner detected yet
+  Style: No linter/formatter configured yet
+
+strict_tdd: false
+# NOTE: Strict TDD Mode unavailable — no test runner detected.
+# Re-run /sdd-init after setting up your stack to re-detect.
+
+testing:
+  strict_tdd: false
+  detected: "2026-05-07"
+  test_runner:
+    available: false
+    framework: ~
+    command: ~
+  layers:
+    unit:
+      available: false
+      tool: ~
+    integration:
+      available: false
+      tool: ~
+    e2e:
+      available: false
+      tool: ~
+  coverage:
+    available: false
+    command: ~
+  quality_tools:
+    linter:
+      available: false
+      command: ~
+    type_checker:
+      available: false
+      command: ~
+    formatter:
+      available: false
+      command: ~
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected modules/packages
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow existing code patterns and conventions
+    - Load relevant coding skills for the project stack
+  verify:
+    - Run tests if test infrastructure exists
+    - Compare implementation against every spec scenario
+  archive:
+    - Warn before merging destructive deltas (large removals)
