@@ -3,11 +3,18 @@ import { auth } from '@/auth'
 import { prisma } from '@/infrastructure/db/prisma'
 import webpush from 'web-push'
 
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT ?? 'mailto:admin@datacharts.app',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
-)
+export const dynamic = 'force-dynamic'
+
+// Lazy init — avoids calling setVapidDetails at module load time (breaks Next build without env vars)
+function initWebPush() {
+  const subject = process.env.VAPID_SUBJECT ?? 'mailto:admin@datacharts.app'
+  const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+  const privateKey = process.env.VAPID_PRIVATE_KEY
+  if (!publicKey || !privateKey) {
+    throw new Error('VAPID keys are not configured')
+  }
+  webpush.setVapidDetails(subject, publicKey, privateKey)
+}
 
 export async function POST(request: NextRequest) {
   const session = await auth()
@@ -17,6 +24,12 @@ export async function POST(request: NextRequest) {
   const { endpoint, keys } = await request.json()
   if (!endpoint || !keys?.p256dh || !keys?.auth) {
     return NextResponse.json({ error: 'Invalid subscription payload' }, { status: 400 })
+  }
+
+  try {
+    initWebPush()
+  } catch {
+    return NextResponse.json({ error: 'Push notifications not configured' }, { status: 503 })
   }
 
   await prisma.pushSubscription.upsert({
