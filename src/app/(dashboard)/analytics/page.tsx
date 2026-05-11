@@ -39,7 +39,10 @@ export default function AnalyticsPage() {
     setLoading(true)
     setError(null)
     fetch(`/api/market/volatility?symbol=${symbol}`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json()
+      })
       .then((json) => setVolatility(json.data))
       .catch(() => setError('Failed to load volatility data'))
       .finally(() => setLoading(false))

@@ -88,6 +88,24 @@ jobs:
           NEXT_PUBLIC_VAPID_PUBLIC_KEY: BFlR4dQ4YdyHLgcrdwvDslOGwt2xWClLXvxx4ezwk6U1iyl9oNzTW4pVMoCGGH4t6U_NYtreBF3pXaSIbZNVWtE
           NEXT_PUBLIC_USE_MOCK_DATA: 'true'
 
+      - name: Start app for E2E tests
+        run: |
+          npm run start > /tmp/next-app.log 2>&1 &
+          for i in {1..60}; do
+            if curl -fsS http://localhost:3000 > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/next-app.log
+          exit 1
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          NEXTAUTH_SECRET: ci-secret
+          NEXTAUTH_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
+          NEXT_PUBLIC_USE_MOCK_DATA: 'true'
+
       - name: Run Playwright E2E tests
         run: npx playwright test
         env:
