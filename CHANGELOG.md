@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/dcalderonlo/datacharts/compare/v1.0.1...v1.1.0) (2026-05-11)
+
+
+### Features
+
+* **deps:** upgrade to Next.js 16.2.6 and React 19.2.6 ([be007b8](https://github.com/dcalderonlo/datacharts/commit/be007b84ee3bd615a96ad8c406d32f31b06a126a))
+* **lint:** migrate to ESLint 9 flat config ([3282af3](https://github.com/dcalderonlo/datacharts/commit/3282af393abd159dc0fe1f2b85db59ce438358a7))
+
+
+### Bug Fixes
+
+* **auth:** split auth config for Edge-safe middleware ([74ad38e](https://github.com/dcalderonlo/datacharts/commit/74ad38e6eb1940a1b73a9b24580095443febc32e))
+* **lint:** replace next lint with eslint src ([0bd05e0](https://github.com/dcalderonlo/datacharts/commit/0bd05e0d607351077a2139e289331d5f92234517))
+
 ## [1.0.1](https://github.com/dcalderonlo/datacharts/compare/v1.0.0...v1.0.1) (2026-05-11)
 
 
