@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/dcalderonlo/datacharts/compare/v1.0.0...v1.0.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* correct docker action versions to v7.1.0 and v4.1.0, add GHCR lo… ([3ec8ace](https://github.com/dcalderonlo/datacharts/commit/3ec8acefaa351df6907f36b46161a6ce2fdc4531))
+* correct docker action versions to v7.1.0 and v4.1.0, add GHCR login to trivy image scan ([c60b766](https://github.com/dcalderonlo/datacharts/commit/c60b766d7d58c477580e9a06c03b86d23ee242f7))
+* setup-node v5, vercel-action v42.3.0, move trivy image scan into docker job ([4f51317](https://github.com/dcalderonlo/datacharts/commit/4f51317f89e4f8edf783e81269b55efe2e92bdb0))
+
 ## 1.0.0 (2026-05-10)
 
 
