@@ -1,5 +1,8 @@
-import { auth } from './src/auth'
+import NextAuth from 'next-auth'
+import { authConfig } from './src/auth.config'
 import { NextResponse, type NextRequest } from 'next/server'
+
+const { auth } = NextAuth(authConfig)
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10)
@@ -36,17 +39,7 @@ export default auth((req: any) => {
     return res
   }
 
-  // Dashboard routes require authentication
-  const isDashboard =
-    pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/overview') ||
-    pathname.startsWith('/analytics') ||
-    pathname.startsWith('/reports') ||
-    pathname.startsWith('/alerts')
-
-  if (isDashboard && !isLoggedIn) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl))
-  }
+  // Dashboard routes — redirect handled by authConfig.callbacks.authorized
 })
 
 export const config = {
