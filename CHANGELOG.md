@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/dcalderonlo/datacharts/compare/v1.4.0...v1.4.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* **e2e:** add register link to login page, make CI e2e tests resilient without DB ([a5334cc](https://github.com/dcalderonlo/datacharts/commit/a5334cc67626356724f6bf86e345d606901f59a7))
+
 ## [1.4.0](https://github.com/dcalderonlo/datacharts/compare/v1.3.0...v1.4.0) (2026-05-11)
 
 
