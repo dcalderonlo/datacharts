@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/dcalderonlo/datacharts/compare/v1.3.0...v1.4.0) (2026-05-11)
+
+
+### Features
+
+* **dashboard:** connect analytics to real volatility data, remove hardcoded KPI cards ([2211435](https://github.com/dcalderonlo/datacharts/commit/221143561278a4dd19d7e1d6586f814015b9acbb))
+
+
+### Bug Fixes
+
+* **analytics:** use async/await in useEffect to avoid setState-in-effect lint error ([1e88bce](https://github.com/dcalderonlo/datacharts/commit/1e88bceb26566c9cba41679e9503a482f7a5d58f))
+* **ci:** start next server before playwright tests, check r.ok in analytics fetch ([ef5fd02](https://github.com/dcalderonlo/datacharts/commit/ef5fd02f83373d007cd3f8fa270496551603be81))
+* **types:** resolve TS errors from exactOptionalPropertyTypes and missing Card import ([5a3782a](https://github.com/dcalderonlo/datacharts/commit/5a3782a9c84bde7e1b4f7654dd559c62c80d621c))
+
 ## [1.3.0](https://github.com/dcalderonlo/datacharts/compare/v1.2.0...v1.3.0) (2026-05-11)
 
 
