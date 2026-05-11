@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/dcalderonlo/datacharts/compare/v1.1.0...v1.2.0) (2026-05-11)
+
+
+### Features
+
+* **deps:** migrate Tailwind CSS v3 to v4 ([765a47c](https://github.com/dcalderonlo/datacharts/commit/765a47c13f4ab17c5bbdb3b2f60c6040bab4ae18))
+* **deps:** migrate Tailwind CSS v3 to v4 ([0d95fee](https://github.com/dcalderonlo/datacharts/commit/0d95fee517d55f7346e5e368b204ed5c048547e2))
+
 ## [1.1.0](https://github.com/dcalderonlo/datacharts/compare/v1.0.1...v1.1.0) (2026-05-11)
 
 
