@@ -36,16 +36,21 @@ export default function AnalyticsPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
-    fetch(`/api/market/volatility?symbol=${symbol}`)
-      .then((r) => {
+    async function load() {
+      setLoading(true)
+      setError(null)
+      try {
+        const r = await fetch(`/api/market/volatility?symbol=${symbol}`)
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
-      })
-      .then((json) => setVolatility(json.data))
-      .catch(() => setError('Failed to load volatility data'))
-      .finally(() => setLoading(false))
+        const json = await r.json()
+        setVolatility(json.data)
+      } catch {
+        setError('Failed to load volatility data')
+      } finally {
+        setLoading(false)
+      }
+    }
+    void load()
   }, [symbol])
 
   const rangeData: ChartData<'bar'> | null = volatility
