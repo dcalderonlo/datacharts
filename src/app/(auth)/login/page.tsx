@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { useState, type FormEvent } from 'react'
 import { signIn } from 'next-auth/react'
 
@@ -86,6 +87,13 @@ export default function LoginPage() {
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
+
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Don&apos;t have an account?{' '}
+          <Link href="/register" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   )
