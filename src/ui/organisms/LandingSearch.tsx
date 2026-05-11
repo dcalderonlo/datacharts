@@ -37,6 +37,7 @@ export function LandingSearch() {
   useEffect(() => {
     const date = readCookie(COOKIE_DATE)
     if (date !== todayStr()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time DOM-read init from cookie; no external subscription involved
       setCount(0)
     } else {
       setCount(Number(readCookie(COOKIE_COUNT) ?? '0'))
