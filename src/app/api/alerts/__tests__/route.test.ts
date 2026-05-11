@@ -20,7 +20,7 @@ describe('GET /api/alerts', () => {
 
   it('returns 401 when unauthenticated', async () => {
     const { auth } = await import('@/auth')
-    vi.mocked(auth).mockResolvedValue(null)
+    vi.mocked(auth).mockResolvedValue(null as never)
 
     const { GET } = await import('../route')
     const res = await GET()
@@ -61,7 +61,7 @@ describe('POST /api/alerts', () => {
 
   it('returns 401 when unauthenticated', async () => {
     const { auth } = await import('@/auth')
-    vi.mocked(auth).mockResolvedValue(null)
+    vi.mocked(auth).mockResolvedValue(null as never)
 
     const { POST } = await import('../route')
     const req = new NextRequest('http://localhost/api/alerts', {

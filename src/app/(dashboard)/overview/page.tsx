@@ -32,11 +32,11 @@ export default function OverviewPage() {
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">Live Quote</h2>
-          <Card>
+          <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
             <ApiErrorBoundary>
               <QuotePanel />
             </ApiErrorBoundary>
-          </Card>
+          </div>
         </div>
         <div>
           <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">My Watchlist</h2>

@@ -18,7 +18,7 @@ describe('GET /api/notifications', () => {
 
   it('returns 401 when unauthenticated', async () => {
     const { auth } = await import('@/auth')
-    vi.mocked(auth).mockResolvedValue(null)
+    vi.mocked(auth).mockResolvedValue(null as never)
 
     const { GET } = await import('../route')
     const res = await GET()
