@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/dcalderonlo/datacharts/compare/v1.2.0...v1.3.0) (2026-05-11)
+
+
+### Features
+
+* **test:** add Phase 11 test suite ([7736d03](https://github.com/dcalderonlo/datacharts/commit/7736d03a32cb62c4b7eee524a781b892a783fdb7))
+
 ## [1.2.0](https://github.com/dcalderonlo/datacharts/compare/v1.1.0...v1.2.0) (2026-05-11)
 
 
