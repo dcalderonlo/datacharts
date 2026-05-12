@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.8](https://github.com/dcalderonlo/datacharts/compare/v1.4.7...v1.4.8) (2026-05-12)
+
+
+### Bug Fixes
+
+* **build:** add postinstall hook to run prisma generate ([c1a6352](https://github.com/dcalderonlo/datacharts/commit/c1a635204e7c3b7dee51abb8956defa7b7e4fecd))
+* **build:** add postinstall hook to run prisma generate ([895ac61](https://github.com/dcalderonlo/datacharts/commit/895ac616eec33262fba5148388eca3695c07a294))
+
 ## [1.4.7](https://github.com/dcalderonlo/datacharts/compare/v1.4.6...v1.4.7) (2026-05-12)
 
 
