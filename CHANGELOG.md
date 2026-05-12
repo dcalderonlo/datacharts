@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.10](https://github.com/dcalderonlo/datacharts/compare/v1.4.9...v1.4.10) (2026-05-12)
+
+
+### Bug Fixes
+
+* **docker:** copy prisma schema before npm ci instead of --ignore-scr… ([0b9216d](https://github.com/dcalderonlo/datacharts/commit/0b9216dcaac3ee778835127268a59424e63780a4))
+* **docker:** copy prisma.config.ts before npm ci ([18d91e6](https://github.com/dcalderonlo/datacharts/commit/18d91e6ce129e0b236d2b107dd7af5965677f56f))
+
 ## [1.4.9](https://github.com/dcalderonlo/datacharts/compare/v1.4.8...v1.4.9) (2026-05-12)
 
 
