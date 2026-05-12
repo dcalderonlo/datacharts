@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.4.2](https://github.com/dcalderonlo/datacharts/compare/v1.4.1...v1.4.2) (2026-05-12)
+
+
+### Bug Fixes
+
+* **build:** run prisma generate before next build to avoid implicit a… ([e6eeb1d](https://github.com/dcalderonlo/datacharts/commit/e6eeb1d26b534a914331eb48f82720a15b54c7a1))
+* **build:** run prisma generate before next build to avoid implicit any types ([e094d70](https://github.com/dcalderonlo/datacharts/commit/e094d70be95dda0dd6b084ff6c5625c311063f9d))
+* **ci:** upgrade upload-artifact to v6 ([f78453b](https://github.com/dcalderonlo/datacharts/commit/f78453b0d45aa00b8b9a6c1d420f7205f3f2500d))
+* **e2e:** use label selectors and resilient routes in auth tests ([6d1795b](https://github.com/dcalderonlo/datacharts/commit/6d1795b1f13c2a0ad677741002324f767fbd557d))
+
 ## [1.4.1](https://github.com/dcalderonlo/datacharts/compare/v1.4.0...v1.4.1) (2026-05-11)
 
 
