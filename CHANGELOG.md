@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.12](https://github.com/dcalderonlo/datacharts/compare/v1.4.11...v1.4.12) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** replace @panva/hkdf with native Web Crypto API for e… ([2c7618b](https://github.com/dcalderonlo/datacharts/commit/2c7618bced26721b10ce1601b3de5d4a47a21cbd))
+
 ## [1.4.11](https://github.com/dcalderonlo/datacharts/compare/v1.4.10...v1.4.11) (2026-05-12)
 
 
