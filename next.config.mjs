@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  turbopack: {
-    resolveConditions: ['worker', 'browser', 'import', 'require', 'default'],
-  },
+  turbopack: {},
 };
 
 export default nextConfig;
