@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth'
+import type { NextAuthRequest } from 'next-auth'
 import { authConfig } from './src/auth.config'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -16,17 +17,16 @@ function parseCookieInt(req: NextRequest, name: string): number {
   return isNaN(n) ? 0 : n
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default auth((req: any) => {
-  const { pathname } = req.nextUrl as URL
+export default auth((req: NextAuthRequest) => {
+  const { pathname } = req.nextUrl
   const isLoggedIn = !!req.auth
 
   // Protect dashboard routes — redirect unauthenticated users to /login
   const isProtected = PROTECTED_PREFIXES.some((p: string) => pathname.startsWith(p))
   if (isProtected && !isLoggedIn) {
-    const loginUrl = req.nextUrl.clone()
-    loginUrl.pathname = '/login'
-    loginUrl.searchParams.set('callbackUrl', req.nextUrl.href)
+    const loginUrl = new URL('/login', req.nextUrl.origin)
+    const callbackUrl = `${pathname}${req.nextUrl.search}`
+    loginUrl.searchParams.set('callbackUrl', callbackUrl)
     return NextResponse.redirect(loginUrl)
   }
 

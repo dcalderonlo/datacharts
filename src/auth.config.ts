@@ -8,7 +8,8 @@ export const authConfig: NextAuthConfig = {
   session: { strategy: 'jwt' },
   providers: [],
   pages: { signIn: '/login' },
-  trustHost: true,
+  // Trust the host in Vercel deployments or when AUTH_URL is explicitly set (local dev)
+  trustHost: Boolean(process.env.VERCEL ?? process.env.AUTH_URL),
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user

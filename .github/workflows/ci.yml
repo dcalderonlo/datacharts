@@ -48,6 +48,7 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: 1
           AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           ALPHA_VANTAGE_API_KEY: dummy_for_build
@@ -82,6 +83,7 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: 1
           AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           ALPHA_VANTAGE_API_KEY: dummy_for_build
@@ -102,6 +104,7 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: 1
           AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           NEXT_PUBLIC_USE_MOCK_DATA: 'true'
@@ -111,6 +114,7 @@ jobs:
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
           AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           NEXT_PUBLIC_USE_MOCK_DATA: 'true'
