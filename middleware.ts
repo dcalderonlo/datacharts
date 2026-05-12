@@ -1,4 +1,3 @@
-import { hkdf } from '@panva/hkdf'
 import { jwtDecrypt } from 'jose'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -10,26 +9,42 @@ const MAX_COOKIE_CHUNKS = 10
 // Auth.js JWE tokens are typically < 2 KB; 20 KB is a generous upper bound.
 const MAX_TOKEN_BYTES = 20_000
 
+// HKDF implemented with Web Crypto API — no Node.js dependencies, safe for Edge runtime.
+// Auth.js derives the encryption key using HKDF-SHA256 with the cookie name as salt.
+async function hkdfEdge(
+  secret: string,
+  salt: string,
+  length: number
+): Promise<Uint8Array> {
+  const enc = new TextEncoder()
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(secret),
+    'HKDF',
+    false,
+    ['deriveBits']
+  )
+  const derived = await crypto.subtle.deriveBits(
+    {
+      name: 'HKDF',
+      hash: 'SHA-256',
+      salt: enc.encode(salt),
+      info: enc.encode(`Auth.js Generated Encryption Key (${salt})`),
+    },
+    keyMaterial,
+    length * 8
+  )
+  return new Uint8Array(derived)
+}
+
 // Auth.js derives the encryption key using HKDF with the cookie name as salt.
 // Key length depends on the enc algorithm: A256CBC-HS512 → 64 bytes, A256GCM → 32 bytes.
 // We use a key resolver so jwtDecrypt can pick the right length from the JWE header.
 function makeKeyResolver(secret: string, salt: string) {
   return async ({ enc }: { enc?: string }): Promise<Uint8Array> => {
-    let length: number
-    if (enc === 'A256GCM') {
-      length = 32
-    } else if (enc === 'A256CBC-HS512') {
-      length = 64
-    } else {
-      throw new Error(`Unsupported JWE enc header: ${String(enc)}`)
-    }
-    return hkdf(
-      'sha256',
-      secret,
-      salt,
-      `Auth.js Generated Encryption Key (${salt})`,
-      length
-    )
+    if (enc === 'A256GCM') return hkdfEdge(secret, salt, 32)
+    if (enc === 'A256CBC-HS512') return hkdfEdge(secret, salt, 64)
+    throw new Error(`Unsupported JWE enc header: ${String(enc)}`)
   }
 }
 
@@ -42,8 +57,7 @@ function getSessionCookieName(req: NextRequest): string {
 async function isAuthenticated(req: NextRequest): Promise<boolean> {
   const secret = process.env.AUTH_SECRET
   if (!secret) {
-    // Fail loudly so misconfigured deployments are immediately diagnosable.
-    console.error('[middleware] AUTH_SECRET is not set — all requests will be treated as unauthenticated')
+    console.error('[middleware] AUTH_SECRET is not set')
     throw new Error('AUTH_SECRET is not set')
   }
 
@@ -62,10 +76,9 @@ async function isAuthenticated(req: NextRequest): Promise<boolean> {
 
   const rawToken = chunks.length > 0 ? chunks.join('') : req.cookies.get(cookieName)?.value
   if (!rawToken || rawToken.length > MAX_TOKEN_BYTES) return false
-  const token = rawToken
 
   try {
-    await jwtDecrypt(token, makeKeyResolver(secret, cookieName), {
+    await jwtDecrypt(rawToken, makeKeyResolver(secret, cookieName), {
       clockTolerance: 15,
       keyManagementAlgorithms: ['dir'],
       contentEncryptionAlgorithms: ['A256CBC-HS512', 'A256GCM'],
@@ -87,15 +100,6 @@ function parseCookieInt(req: NextRequest, name: string): number {
 }
 
 export default async function middleware(req: NextRequest) {
-  try {
-    return await middlewareInner(req)
-  } catch (err) {
-    console.error('[middleware] unhandled error:', err)
-    throw err
-  }
-}
-
-async function middlewareInner(req: NextRequest) {
   const { pathname } = req.nextUrl
   const isSecure = req.nextUrl.protocol === 'https:'
 
@@ -134,8 +138,7 @@ async function middlewareInner(req: NextRequest) {
         maxAge: 86400,
       }
       const res = NextResponse.next()
-      const newCount = searchCount + 1
-      res.cookies.set('anon_search_count', String(newCount), cookieOpts)
+      res.cookies.set('anon_search_count', String(searchCount + 1), cookieOpts)
       res.cookies.set('anon_search_date', today, cookieOpts)
       return res
     }
