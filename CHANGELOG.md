@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.15](https://github.com/dcalderonlo/datacharts/compare/v1.4.14...v1.4.15) (2026-05-12)
+
+
+### Bug Fixes
+
+* **config:** set turbopack.root to silence workspace inference warning ([482e300](https://github.com/dcalderonlo/datacharts/commit/482e3008e5b5dfa4524313d08b9041c9c95b3698))
+
 ## [1.4.14](https://github.com/dcalderonlo/datacharts/compare/v1.4.13...v1.4.14) (2026-05-12)
 
 
