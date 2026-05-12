@@ -87,6 +87,15 @@ function parseCookieInt(req: NextRequest, name: string): number {
 }
 
 export default async function middleware(req: NextRequest) {
+  try {
+    return await middlewareInner(req)
+  } catch (err) {
+    console.error('[middleware] unhandled error:', err)
+    throw err
+  }
+}
+
+async function middlewareInner(req: NextRequest) {
   const { pathname } = req.nextUrl
   const isSecure = req.nextUrl.protocol === 'https:'
 
