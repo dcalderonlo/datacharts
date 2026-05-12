@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.6](https://github.com/dcalderonlo/datacharts/compare/v1.4.5...v1.4.6) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** harden session decryption and cookie chunk loop ([f58b3a5](https://github.com/dcalderonlo/datacharts/commit/f58b3a544c9f966096c89b70b3f3a1766808e7e3))
+
 ## [1.4.5](https://github.com/dcalderonlo/datacharts/compare/v1.4.4...v1.4.5) (2026-05-12)
 
 
