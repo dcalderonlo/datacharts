@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.11](https://github.com/dcalderonlo/datacharts/compare/v1.4.10...v1.4.11) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** force web crypto build for @panva/hkdf in edge runtime ([adcc09a](https://github.com/dcalderonlo/datacharts/commit/adcc09a8946ee16fe62514f73b43e93733d30e38))
+* **middleware:** force web crypto build for @panva/hkdf in edge runtime ([005594d](https://github.com/dcalderonlo/datacharts/commit/005594dc51893f15acbde02db9eed4ec514f459b))
+
 ## [1.4.10](https://github.com/dcalderonlo/datacharts/compare/v1.4.9...v1.4.10) (2026-05-12)
 
 
