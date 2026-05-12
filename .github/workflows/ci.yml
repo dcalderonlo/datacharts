@@ -47,7 +47,7 @@ jobs:
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
-          NEXTAUTH_SECRET: ci-secret
+          AUTH_SECRET: ci-secret
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           ALPHA_VANTAGE_API_KEY: dummy_for_build
@@ -81,7 +81,7 @@ jobs:
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
-          NEXTAUTH_SECRET: ci-secret
+          AUTH_SECRET: ci-secret
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           ALPHA_VANTAGE_API_KEY: dummy_for_build
@@ -101,7 +101,7 @@ jobs:
           exit 1
         env:
           NEXT_TELEMETRY_DISABLED: 1
-          NEXTAUTH_SECRET: ci-secret
+          AUTH_SECRET: ci-secret
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           NEXT_PUBLIC_USE_MOCK_DATA: 'true'
@@ -110,7 +110,7 @@ jobs:
         run: npx playwright test
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
-          NEXTAUTH_SECRET: ci-secret
+          AUTH_SECRET: ci-secret
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           NEXT_PUBLIC_USE_MOCK_DATA: 'true'

@@ -4,6 +4,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const { auth } = NextAuth(authConfig)
 
+const PROTECTED_PREFIXES = ['/overview', '/analytics', '/reports', '/alerts']
+
 function todayStr() {
   return new Date().toISOString().slice(0, 10)
 }
@@ -18,6 +20,15 @@ function parseCookieInt(req: NextRequest, name: string): number {
 export default auth((req: any) => {
   const { pathname } = req.nextUrl as URL
   const isLoggedIn = !!req.auth
+
+  // Protect dashboard routes — redirect unauthenticated users to /login
+  const isProtected = PROTECTED_PREFIXES.some((p: string) => pathname.startsWith(p))
+  if (isProtected && !isLoggedIn) {
+    const loginUrl = req.nextUrl.clone()
+    loginUrl.pathname = '/login'
+    loginUrl.searchParams.set('callbackUrl', req.nextUrl.href)
+    return NextResponse.redirect(loginUrl)
+  }
 
   // Anonymous search rate limiting on GET /api/market/quotes
   if (pathname === '/api/market/quotes' && req.method === 'GET' && !isLoggedIn) {
@@ -38,8 +49,6 @@ export default auth((req: any) => {
     res.cookies.set('anon_search_date', today, { httpOnly: true, path: '/', maxAge: 86400 })
     return res
   }
-
-  // Dashboard routes — redirect handled by authConfig.callbacks.authorized
 })
 
 export const config = {
