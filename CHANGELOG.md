@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.7](https://github.com/dcalderonlo/datacharts/compare/v1.4.6...v1.4.7) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** track chunk length incrementally and harden key reso… ([0183cac](https://github.com/dcalderonlo/datacharts/commit/0183caca9d4c183f4a23350dd745bbe664cdc0ff))
+* **middleware:** track chunk length incrementally and harden key resolver types ([59e30ce](https://github.com/dcalderonlo/datacharts/commit/59e30cecd0b669cf899fa56fc79bbff37c536b34))
+
 ## [1.4.6](https://github.com/dcalderonlo/datacharts/compare/v1.4.5...v1.4.6) (2026-05-12)
 
 
