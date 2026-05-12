@@ -4,8 +4,8 @@ import { test, expect } from '@playwright/test'
 
 test('redirects unauthenticated user from dashboard to login', async ({ page }) => {
   await page.goto('/overview')
-  // Either redirects to login or stays on overview (DB not available in CI)
-  await expect(page).toHaveURL(/\/login|\/overview/, { timeout: 10000 })
+  // Protected by auth middleware — unauthenticated users must be redirected to /login
+  await expect(page).toHaveURL(/\/login(?:\?.*)?$/, { timeout: 10000 })
 })
 
 test('login page renders form', async ({ page }) => {
