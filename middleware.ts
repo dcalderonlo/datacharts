@@ -4,16 +4,26 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const PROTECTED_PREFIXES = ['/overview', '/analytics', '/reports', '/alerts']
 
+// Max chunks to read from a session cookie — guards against attacker-controlled
+// cookie names causing unbounded looping in Edge middleware.
+const MAX_COOKIE_CHUNKS = 10
+// Auth.js JWE tokens are typically < 2 KB; 20 KB is a generous upper bound.
+const MAX_TOKEN_BYTES = 20_000
+
 // Auth.js derives the encryption key using HKDF with the cookie name as salt.
-// We must replicate the same derivation to decrypt the JWE token.
-async function getDerivedEncryptionKey(secret: string, salt: string): Promise<Uint8Array> {
-  return hkdf(
-    'sha256',
-    secret,
-    salt,
-    `Auth.js Generated Encryption Key (${salt})`,
-    64
-  )
+// Key length depends on the enc algorithm: A256CBC-HS512 → 64 bytes, A256GCM → 32 bytes.
+// We use a key resolver so jwtDecrypt can pick the right length from the JWE header.
+function makeKeyResolver(secret: string, salt: string) {
+  return async ({ enc }: { enc: string }): Promise<Uint8Array> => {
+    const length = enc === 'A256GCM' ? 32 : 64
+    return hkdf(
+      'sha256',
+      secret,
+      salt,
+      `Auth.js Generated Encryption Key (${salt})`,
+      length
+    )
+  }
 }
 
 // Auth.js uses __Secure- prefix when the request URL is https (not based on NODE_ENV).
@@ -24,26 +34,28 @@ function getSessionCookieName(req: NextRequest): string {
 
 async function isAuthenticated(req: NextRequest): Promise<boolean> {
   const secret = process.env.AUTH_SECRET
-  if (!secret) return false
+  if (!secret) {
+    // Fail loudly so misconfigured deployments are immediately diagnosable.
+    console.error('[middleware] AUTH_SECRET is not set — all requests will be treated as unauthenticated')
+    throw new Error('AUTH_SECRET is not set')
+  }
 
   const cookieName = getSessionCookieName(req)
 
   // Auth.js may chunk large tokens as cookieName.0, cookieName.1, etc.
   const chunks: string[] = []
-  let i = 0
-  while (true) {
+  for (let i = 0; i < MAX_COOKIE_CHUNKS; i++) {
     const chunk = req.cookies.get(`${cookieName}.${i}`)?.value
     if (!chunk) break
     chunks.push(chunk)
-    i++
+    if (chunks.join('').length > MAX_TOKEN_BYTES) break
   }
   const token = chunks.length > 0 ? chunks.join('') : req.cookies.get(cookieName)?.value
 
   if (!token) return false
 
   try {
-    const encryptionKey = await getDerivedEncryptionKey(secret, cookieName)
-    await jwtDecrypt(token, encryptionKey, {
+    await jwtDecrypt(token, makeKeyResolver(secret, cookieName), {
       clockTolerance: 15,
       keyManagementAlgorithms: ['dir'],
       contentEncryptionAlgorithms: ['A256CBC-HS512', 'A256GCM'],
