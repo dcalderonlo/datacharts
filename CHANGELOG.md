@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.9](https://github.com/dcalderonlo/datacharts/compare/v1.4.8...v1.4.9) (2026-05-12)
+
+
+### Bug Fixes
+
+* **docker:** use --ignore-scripts in npm ci to prevent postinstall fa… ([5f588cb](https://github.com/dcalderonlo/datacharts/commit/5f588cb840600eeaeac05eebb89d4689c0a92d31))
+
 ## [1.4.8](https://github.com/dcalderonlo/datacharts/compare/v1.4.7...v1.4.8) (2026-05-12)
 
 
