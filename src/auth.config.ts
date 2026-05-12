@@ -13,20 +13,6 @@ export const authConfig: NextAuthConfig = {
     process.env.VERCEL ?? process.env.AUTH_URL ?? process.env.NEXTAUTH_URL
   ),
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user
-      const { pathname } = nextUrl
-
-      const isDashboard =
-        pathname.startsWith('/dashboard') ||
-        pathname.startsWith('/overview') ||
-        pathname.startsWith('/analytics') ||
-        pathname.startsWith('/reports') ||
-        pathname.startsWith('/alerts')
-
-      if (isDashboard && !isLoggedIn) return false
-      return true
-    },
     jwt({ token, user }) {
       if (user) token.id = user.id
       return token
