@@ -14,8 +14,15 @@ const MAX_TOKEN_BYTES = 20_000
 // Key length depends on the enc algorithm: A256CBC-HS512 → 64 bytes, A256GCM → 32 bytes.
 // We use a key resolver so jwtDecrypt can pick the right length from the JWE header.
 function makeKeyResolver(secret: string, salt: string) {
-  return async ({ enc }: { enc: string }): Promise<Uint8Array> => {
-    const length = enc === 'A256GCM' ? 32 : 64
+  return async ({ enc }: { enc?: string }): Promise<Uint8Array> => {
+    let length: number
+    if (enc === 'A256GCM') {
+      length = 32
+    } else if (enc === 'A256CBC-HS512') {
+      length = 64
+    } else {
+      throw new Error(`Unsupported JWE enc header: ${String(enc)}`)
+    }
     return hkdf(
       'sha256',
       secret,
@@ -44,15 +51,18 @@ async function isAuthenticated(req: NextRequest): Promise<boolean> {
 
   // Auth.js may chunk large tokens as cookieName.0, cookieName.1, etc.
   const chunks: string[] = []
+  let totalLength = 0
   for (let i = 0; i < MAX_COOKIE_CHUNKS; i++) {
     const chunk = req.cookies.get(`${cookieName}.${i}`)?.value
     if (!chunk) break
+    totalLength += chunk.length
+    if (totalLength > MAX_TOKEN_BYTES) return false
     chunks.push(chunk)
-    if (chunks.join('').length > MAX_TOKEN_BYTES) break
   }
-  const token = chunks.length > 0 ? chunks.join('') : req.cookies.get(cookieName)?.value
 
-  if (!token) return false
+  const rawToken = chunks.length > 0 ? chunks.join('') : req.cookies.get(cookieName)?.value
+  if (!rawToken || rawToken.length > MAX_TOKEN_BYTES) return false
+  const token = rawToken
 
   try {
     await jwtDecrypt(token, makeKeyResolver(secret, cookieName), {
