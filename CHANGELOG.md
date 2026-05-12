@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.5](https://github.com/dcalderonlo/datacharts/compare/v1.4.4...v1.4.5) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** use JWE decryption and harden cookie handling ([d56a22a](https://github.com/dcalderonlo/datacharts/commit/d56a22aa4df78cb383bd228decf86b61ff7e9d30))
+* **middleware:** use JWE decryption and harden cookie handling ([c309bbc](https://github.com/dcalderonlo/datacharts/commit/c309bbc374eefdb28dd1a303fed13df7fddd7192))
+
 ## [1.4.4](https://github.com/dcalderonlo/datacharts/compare/v1.4.3...v1.4.4) (2026-05-12)
 
 
