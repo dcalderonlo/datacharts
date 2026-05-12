@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.13](https://github.com/dcalderonlo/datacharts/compare/v1.4.12...v1.4.13) (2026-05-12)
+
+
+### Bug Fixes
+
+* **build:** force turbopack for production build and remove unused [@p](https://github.com/p)… ([e132ecb](https://github.com/dcalderonlo/datacharts/commit/e132ecb9aa6dffbd38d10506d26f268453bae2a0))
+
 ## [1.4.12](https://github.com/dcalderonlo/datacharts/compare/v1.4.11...v1.4.12) (2026-05-12)
 
 
