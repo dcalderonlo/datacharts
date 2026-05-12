@@ -1,5 +1,81 @@
 # Changelog
 
+## [1.4.12](https://github.com/dcalderonlo/datacharts/compare/v1.4.11...v1.4.12) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** replace @panva/hkdf with native Web Crypto API for e… ([2c7618b](https://github.com/dcalderonlo/datacharts/commit/2c7618bced26721b10ce1601b3de5d4a47a21cbd))
+
+## [1.4.11](https://github.com/dcalderonlo/datacharts/compare/v1.4.10...v1.4.11) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** force web crypto build for @panva/hkdf in edge runtime ([adcc09a](https://github.com/dcalderonlo/datacharts/commit/adcc09a8946ee16fe62514f73b43e93733d30e38))
+* **middleware:** force web crypto build for @panva/hkdf in edge runtime ([005594d](https://github.com/dcalderonlo/datacharts/commit/005594dc51893f15acbde02db9eed4ec514f459b))
+
+## [1.4.10](https://github.com/dcalderonlo/datacharts/compare/v1.4.9...v1.4.10) (2026-05-12)
+
+
+### Bug Fixes
+
+* **docker:** copy prisma schema before npm ci instead of --ignore-scr… ([0b9216d](https://github.com/dcalderonlo/datacharts/commit/0b9216dcaac3ee778835127268a59424e63780a4))
+* **docker:** copy prisma.config.ts before npm ci ([18d91e6](https://github.com/dcalderonlo/datacharts/commit/18d91e6ce129e0b236d2b107dd7af5965677f56f))
+
+## [1.4.9](https://github.com/dcalderonlo/datacharts/compare/v1.4.8...v1.4.9) (2026-05-12)
+
+
+### Bug Fixes
+
+* **docker:** use --ignore-scripts in npm ci to prevent postinstall fa… ([5f588cb](https://github.com/dcalderonlo/datacharts/commit/5f588cb840600eeaeac05eebb89d4689c0a92d31))
+
+## [1.4.8](https://github.com/dcalderonlo/datacharts/compare/v1.4.7...v1.4.8) (2026-05-12)
+
+
+### Bug Fixes
+
+* **build:** add postinstall hook to run prisma generate ([c1a6352](https://github.com/dcalderonlo/datacharts/commit/c1a635204e7c3b7dee51abb8956defa7b7e4fecd))
+* **build:** add postinstall hook to run prisma generate ([895ac61](https://github.com/dcalderonlo/datacharts/commit/895ac616eec33262fba5148388eca3695c07a294))
+
+## [1.4.7](https://github.com/dcalderonlo/datacharts/compare/v1.4.6...v1.4.7) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** track chunk length incrementally and harden key reso… ([0183cac](https://github.com/dcalderonlo/datacharts/commit/0183caca9d4c183f4a23350dd745bbe664cdc0ff))
+* **middleware:** track chunk length incrementally and harden key resolver types ([59e30ce](https://github.com/dcalderonlo/datacharts/commit/59e30cecd0b669cf899fa56fc79bbff37c536b34))
+
+## [1.4.6](https://github.com/dcalderonlo/datacharts/compare/v1.4.5...v1.4.6) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** harden session decryption and cookie chunk loop ([f58b3a5](https://github.com/dcalderonlo/datacharts/commit/f58b3a544c9f966096c89b70b3f3a1766808e7e3))
+
+## [1.4.5](https://github.com/dcalderonlo/datacharts/compare/v1.4.4...v1.4.5) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** use JWE decryption and harden cookie handling ([d56a22a](https://github.com/dcalderonlo/datacharts/commit/d56a22aa4df78cb383bd228decf86b61ff7e9d30))
+* **middleware:** use JWE decryption and harden cookie handling ([c309bbc](https://github.com/dcalderonlo/datacharts/commit/c309bbc374eefdb28dd1a303fed13df7fddd7192))
+
+## [1.4.4](https://github.com/dcalderonlo/datacharts/compare/v1.4.3...v1.4.4) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** replace next-auth with jose for Edge-safe JWT verification ([9ae3a65](https://github.com/dcalderonlo/datacharts/commit/9ae3a6530395a025b62f083bbf549c31f37ddf6d))
+
+## [1.4.3](https://github.com/dcalderonlo/datacharts/compare/v1.4.2...v1.4.3) (2026-05-12)
+
+
+### Bug Fixes
+
+* **auth:** use AUTH_SECRET, trustHost, and explicit middleware redire… ([04d3f53](https://github.com/dcalderonlo/datacharts/commit/04d3f53fab863ef48e729a81fc7c48fbbae5cae4))
+* **auth:** use AUTH_SECRET, trustHost, and explicit middleware redirect for protected routes ([8f64570](https://github.com/dcalderonlo/datacharts/commit/8f64570b94dc1c08561342da6bcbc309aacd67b0))
+
 ## [1.4.2](https://github.com/dcalderonlo/datacharts/compare/v1.4.1...v1.4.2) (2026-05-12)
 
 
