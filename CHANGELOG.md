@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.14](https://github.com/dcalderonlo/datacharts/compare/v1.4.13...v1.4.14) (2026-05-12)
+
+
+### Bug Fixes
+
+* **vercel:** declare nextjs framework and clean up invalid turbopack … ([dab039d](https://github.com/dcalderonlo/datacharts/commit/dab039d8ff8974ad71a2eb69d1d98dbce8260732))
+* **vercel:** declare nextjs framework and clean up invalid turbopack config ([c8636cc](https://github.com/dcalderonlo/datacharts/commit/c8636cca4e9ad1efe820cabe5b9d1654890fa989))
+
 ## [1.4.13](https://github.com/dcalderonlo/datacharts/compare/v1.4.12...v1.4.13) (2026-05-12)
 
 
