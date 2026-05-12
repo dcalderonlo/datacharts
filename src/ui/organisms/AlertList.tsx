@@ -33,6 +33,7 @@ export function AlertList({ refreshKey }: AlertListProps) {
   }, [])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetchAlerts is async; setState calls happen in async callbacks, not synchronously in the effect body
     fetchAlerts()
   }, [fetchAlerts, refreshKey])
 

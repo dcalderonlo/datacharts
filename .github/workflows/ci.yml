@@ -38,20 +38,99 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unit tests
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
+
       - name: Build
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
-          NEXTAUTH_SECRET: ci-secret
+          AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
           NEXTAUTH_URL: http://localhost:3000
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
           ALPHA_VANTAGE_API_KEY: dummy_for_build
           NEXT_PUBLIC_VAPID_PUBLIC_KEY: BFlR4dQ4YdyHLgcrdwvDslOGwt2xWClLXvxx4ezwk6U1iyl9oNzTW4pVMoCGGH4t6U_NYtreBF3pXaSIbZNVWtE
 
+  e2e:
+    name: E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: '24.15.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
+
+      - name: Build app
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
+          NEXTAUTH_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
+          ALPHA_VANTAGE_API_KEY: dummy_for_build
+          NEXT_PUBLIC_VAPID_PUBLIC_KEY: BFlR4dQ4YdyHLgcrdwvDslOGwt2xWClLXvxx4ezwk6U1iyl9oNzTW4pVMoCGGH4t6U_NYtreBF3pXaSIbZNVWtE
+          NEXT_PUBLIC_USE_MOCK_DATA: 'true'
+
+      - name: Start app for E2E tests
+        run: |
+          npm run start > /tmp/next-app.log 2>&1 &
+          for i in {1..60}; do
+            if curl -fsS http://localhost:3000 > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/next-app.log
+          exit 1
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
+          NEXTAUTH_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
+          NEXT_PUBLIC_USE_MOCK_DATA: 'true'
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+          AUTH_SECRET: ci-secret
+          AUTH_URL: http://localhost:3000
+          NEXTAUTH_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/datacharts
+          NEXT_PUBLIC_USE_MOCK_DATA: 'true'
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
   docker:
     name: Docker Build & Push
     runs-on: ubuntu-latest
-    needs: quality
+    needs: [quality, e2e]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: read
@@ -90,7 +169,7 @@ jobs:
       - name: Trivy — Docker Image Scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
           format: sarif
           output: trivy-image.sarif
           severity: CRITICAL,HIGH

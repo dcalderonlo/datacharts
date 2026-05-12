@@ -1,11 +1,15 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --only=production
+COPY prisma ./prisma
+COPY prisma.config.ts ./
+RUN npm ci --omit=dev
 
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY prisma ./prisma
+COPY prisma.config.ts ./
 RUN npm ci
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1

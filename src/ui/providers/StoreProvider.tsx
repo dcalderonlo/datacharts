@@ -13,9 +13,11 @@ function PushRegistrar() {
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const storeRef = useRef<StoreType | null>(null)
-  if (!storeRef.current) storeRef.current = createStore()
+  if (storeRef.current == null) storeRef.current = createStore()
+  // eslint-disable-next-line react-hooks/refs -- storeRef.current is guaranteed non-null after lazy-init above; this is the recommended SSR-safe Zustand pattern
+  const store = storeRef.current
   return (
-    <StoreContext.Provider value={storeRef.current}>
+    <StoreContext.Provider value={store}>
       <PushRegistrar />
       {children}
     </StoreContext.Provider>
