@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.3](https://github.com/dcalderonlo/datacharts/compare/v1.4.2...v1.4.3) (2026-05-12)
+
+
+### Bug Fixes
+
+* **auth:** use AUTH_SECRET, trustHost, and explicit middleware redire… ([04d3f53](https://github.com/dcalderonlo/datacharts/commit/04d3f53fab863ef48e729a81fc7c48fbbae5cae4))
+* **auth:** use AUTH_SECRET, trustHost, and explicit middleware redirect for protected routes ([8f64570](https://github.com/dcalderonlo/datacharts/commit/8f64570b94dc1c08561342da6bcbc309aacd67b0))
+
 ## [1.4.2](https://github.com/dcalderonlo/datacharts/compare/v1.4.1...v1.4.2) (2026-05-12)
 
 
