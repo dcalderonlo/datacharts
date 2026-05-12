@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.16](https://github.com/dcalderonlo/datacharts/compare/v1.4.15...v1.4.16) (2026-05-12)
+
+
+### Bug Fixes
+
+* **ci:** use image digest for trivy scan instead of :latest tag ([9c2e22b](https://github.com/dcalderonlo/datacharts/commit/9c2e22b4ea8d6f898cfa61e3901539f6d2520ae3))
+
 ## [1.4.15](https://github.com/dcalderonlo/datacharts/compare/v1.4.14...v1.4.15) (2026-05-12)
 
 
