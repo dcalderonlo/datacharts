@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/dcalderonlo/datacharts/compare/v1.4.3...v1.4.4) (2026-05-12)
+
+
+### Bug Fixes
+
+* **middleware:** replace next-auth with jose for Edge-safe JWT verification ([9ae3a65](https://github.com/dcalderonlo/datacharts/commit/9ae3a6530395a025b62f083bbf549c31f37ddf6d))
+
 ## [1.4.3](https://github.com/dcalderonlo/datacharts/compare/v1.4.2...v1.4.3) (2026-05-12)
 
 
