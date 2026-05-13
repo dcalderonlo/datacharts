@@ -4,10 +4,17 @@ const BASE_URL = 'https://finnhub.io/api/v1'
 
 type RawResponse = Record<string, unknown>
 
+class EnvironmentConfigurationError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'EnvironmentConfigurationError'
+  }
+}
+
 function getApiKey(): string {
   const key = process.env['FINNHUB_API_KEY']
   if (!key) {
-    throw new FinnhubError('UPSTREAM_ERROR', 'FINNHUB_API_KEY is not set')
+    throw new EnvironmentConfigurationError('Missing environment variable: FINNHUB_API_KEY')
   }
   return key
 }

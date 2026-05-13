@@ -20,13 +20,12 @@ describe('FinnhubClient', () => {
   })
 
   describe('missing FINNHUB_API_KEY', () => {
-    it('throws FinnhubError with UPSTREAM_ERROR when key is not set', async () => {
+    it('throws EnvironmentConfigurationError when key is not set', async () => {
       delete process.env['FINNHUB_API_KEY']
       const { fetchQuote } = await importClient()
       await expect(fetchQuote('AAPL')).rejects.toMatchObject({
-        name: 'FinnhubError',
-        code: 'UPSTREAM_ERROR',
-        message: 'FINNHUB_API_KEY is not set',
+        name: 'EnvironmentConfigurationError',
+        message: 'Missing environment variable: FINNHUB_API_KEY',
       })
     })
   })

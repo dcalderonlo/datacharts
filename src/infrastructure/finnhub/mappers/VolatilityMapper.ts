@@ -12,7 +12,7 @@ type RawFinnhubMetric = {
 
 export function mapVolatility(raw: unknown): VolatilityData {
   const r = raw as RawFinnhubMetric
-  const m = r.metric
+  const m = r.metric ?? {}
   return {
     symbol: r.symbol,
     beta: m.beta ?? NaN,
