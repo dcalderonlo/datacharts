@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.5.0](https://github.com/dcalderonlo/datacharts/compare/v1.4.16...v1.5.0) (2026-05-13)
+
+
+### Features
+
+* **domain:** make Quote.volume and CompanyProfile.description optional ([db27044](https://github.com/dcalderonlo/datacharts/commit/db27044929abb1a4f8c55951e853a9d8ad4ab32f))
+* **finnhub:** add FinnhubError and FinnhubClient ([9ae7df0](https://github.com/dcalderonlo/datacharts/commit/9ae7df0c6c9a1111045d2fffed158a6c3d08ec32))
+* **finnhub:** add FinnhubMarketAdapter ([18e22be](https://github.com/dcalderonlo/datacharts/commit/18e22bee9f61c02c4764270ec05740647a83c2df))
+* **finnhub:** add quote, index, company, and volatility mappers ([bc90bed](https://github.com/dcalderonlo/datacharts/commit/bc90bedb9a46d801f0c6d60bf6999f59c9b318d2))
+
+
+### Bug Fixes
+
+* **finnhub:** fix exactOptionalPropertyTypes errors and unused import ([aba62e8](https://github.com/dcalderonlo/datacharts/commit/aba62e89964c96cbc4173265bd14cb19b75b7f41))
+* **finnhub:** use EnvironmentConfigurationError for missing API key and guard metric null ([97928da](https://github.com/dcalderonlo/datacharts/commit/97928da9cdbd146f33c6cce41bef185a0c7a760f))
+
 ## [1.4.16](https://github.com/dcalderonlo/datacharts/compare/v1.4.15...v1.4.16) (2026-05-12)
 
 
