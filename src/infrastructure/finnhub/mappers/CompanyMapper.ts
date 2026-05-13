@@ -14,7 +14,6 @@ export function mapCompany(raw: unknown): CompanyProfile {
   return {
     symbol: r.ticker,
     name: r.name,
-    description: undefined,
     sector: r.finnhubIndustry ?? 'Unknown',
     industry: r.finnhubIndustry ?? 'Unknown',
     marketCap: (r.marketCapitalization ?? 0) * 1_000_000,

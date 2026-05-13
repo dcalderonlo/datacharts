@@ -22,7 +22,6 @@ export function mapQuote(raw: unknown): Quote {
     high: q.h,
     low: q.l,
     price: q.c,
-    volume: undefined,
     latestTradingDay,
     previousClose: q.pc,
     change: q.d,
