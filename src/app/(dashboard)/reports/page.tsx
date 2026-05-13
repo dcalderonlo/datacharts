@@ -66,7 +66,7 @@ export default function ReportsPage() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <StatNumber value={q.volume} format="volume" className="text-gray-400" />
+                  <StatNumber value={q.volume ?? 0} format="volume" className="text-gray-400" />
                 </td>
                 <td className="px-4 py-3 text-gray-400 text-xs">{q.latestTradingDay}</td>
               </tr>

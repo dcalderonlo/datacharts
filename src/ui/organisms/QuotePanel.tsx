@@ -52,7 +52,7 @@ export function QuotePanel() {
             </div>
             <div className="bg-gray-800 rounded-lg p-3 flex flex-col gap-1 col-span-2">
               <span className="text-gray-500">Volume</span>
-              <StatNumber value={quote.volume} format="volume" className="text-gray-100" />
+              <StatNumber value={quote.volume ?? 0} format="volume" className="text-gray-100" />
             </div>
           </div>
 

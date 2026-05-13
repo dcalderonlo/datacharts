@@ -4,7 +4,7 @@ export interface Quote {
   high: number
   low: number
   price: number
-  volume: number
+  volume?: number
   latestTradingDay: string
   previousClose: number
   change: number
