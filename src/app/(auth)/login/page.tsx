@@ -14,22 +14,20 @@ export default function LoginPage() {
     setLoading(true)
     setError(null)
 
-    try {
-      await signIn('credentials', {
-        email,
-        password,
-        redirectTo: '/overview',
-      })
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : ''
-      if (msg.toLowerCase().includes('credentials')) {
-        setError('Invalid email or password')
-      } else {
-        setError('Something went wrong. Please try again.')
-      }
-    } finally {
-      setLoading(false)
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    })
+
+    setLoading(false)
+
+    if (!result || result.error) {
+      setError('Invalid email or password')
+      return
     }
+
+    window.location.href = '/overview'
   }
 
   return (
