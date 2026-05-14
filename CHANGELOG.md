@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/dcalderonlo/datacharts/compare/v1.5.1...v1.6.0) (2026-05-14)
+
+
+### Features
+
+* **market:** switch data provider from Alpha Vantage to Finnhub ([a3fef1e](https://github.com/dcalderonlo/datacharts/commit/a3fef1ed71068509386094262ca4fe96a2f42b15))
+* **market:** switch data provider from Alpha Vantage to Finnhub ([21a6eb6](https://github.com/dcalderonlo/datacharts/commit/21a6eb63afe9ce5edbe51593cec76edf324718fc))
+
 ## [1.5.1](https://github.com/dcalderonlo/datacharts/compare/v1.5.0...v1.5.1) (2026-05-14)
 
 
