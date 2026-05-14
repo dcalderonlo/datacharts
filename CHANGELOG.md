@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.1](https://github.com/dcalderonlo/datacharts/compare/v1.5.0...v1.5.1) (2026-05-14)
+
+
+### Bug Fixes
+
+* **auth:** use redirect:false in signIn to prevent redirect loop on l… ([0c8d9c6](https://github.com/dcalderonlo/datacharts/commit/0c8d9c6e4a6a4fc41b421fd7c9a57981f34fbda8))
+* **auth:** use redirect:false in signIn to prevent redirect loop on login ([95254a2](https://github.com/dcalderonlo/datacharts/commit/95254a2a6ced791b009e1b339084f796435fccf7))
+* **auth:** use router.push with granular error handling in login ([2b261bf](https://github.com/dcalderonlo/datacharts/commit/2b261bfd04a1069619c6a9c8c217b11c60b82865))
+
 ## [1.5.0](https://github.com/dcalderonlo/datacharts/compare/v1.4.16...v1.5.0) (2026-05-13)
 
 
