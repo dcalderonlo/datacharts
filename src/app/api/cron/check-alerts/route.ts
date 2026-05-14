@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { type PriceAlert } from '@prisma/client'
 import { prisma } from '@/infrastructure/db/prisma'
 import { createMarketRepository } from '@/infrastructure/repositories/MarketRepository'
 import { GetRealTimeQuote } from '@/core/use-cases/GetRealTimeQuote'
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Get all non-triggered alerts
-  const alerts = await prisma.priceAlert.findMany({
+  const alerts: PriceAlert[] = await prisma.priceAlert.findMany({
     where: { triggered: false },
   })
 
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Group by symbol — one API call per unique symbol
-  const symbols = Array.from(new Set(alerts.map((a: { symbol: string }) => a.symbol)))
+  const symbols = Array.from(new Set(alerts.map((a) => a.symbol)))
   const prices: Record<string, number> = {}
 
   for (const symbol of symbols) {
