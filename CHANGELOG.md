@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.1](https://github.com/dcalderonlo/datacharts/compare/v1.6.0...v1.6.1) (2026-05-14)
+
+
+### Bug Fixes
+
+* **cron:** annotate alert symbol type to satisfy noImplicitAny ([4482b3c](https://github.com/dcalderonlo/datacharts/commit/4482b3c5a13b3c91a241c5c1218f365b2982ce79))
+* **cron:** annotate alert symbol type to satisfy noImplicitAny ([b18b446](https://github.com/dcalderonlo/datacharts/commit/b18b4460192f5fc0726be1cf495f6c32eb7cc191))
+* **cron:** type alerts as PriceAlert[] to fix implicit any on symbol ([e9e5144](https://github.com/dcalderonlo/datacharts/commit/e9e514402f056995efd96743a0fc61dc414b6fc0))
+
 ## [1.6.0](https://github.com/dcalderonlo/datacharts/compare/v1.5.1...v1.6.0) (2026-05-14)
 
 
