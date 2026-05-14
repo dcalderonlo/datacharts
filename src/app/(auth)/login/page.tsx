@@ -1,9 +1,11 @@
 'use client'
 import Link from 'next/link'
 import { useState, type FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -15,18 +17,30 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         email,
         password,
-        redirectTo: '/overview',
+        redirect: false,
       })
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : ''
-      if (msg.toLowerCase().includes('credentials')) {
-        setError('Invalid email or password')
-      } else {
-        setError('Something went wrong. Please try again.')
+
+      if (!result) {
+        setError('Unable to sign in right now. Please try again.')
+        return
       }
+
+      if (result.error) {
+        if (result.error === 'CredentialsSignin') {
+          setError('Invalid email or password')
+        } else {
+          setError('Unable to sign in right now. Please try again.')
+        }
+        return
+      }
+
+      router.push('/overview')
+      router.refresh()
+    } catch {
+      setError('Unable to sign in right now. Please try again.')
     } finally {
       setLoading(false)
     }
