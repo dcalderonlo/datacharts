@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { AlphaVantageError } from '@/infrastructure/alpha-vantage/errors'
+import { MarketError } from '@/core/domain/errors/MarketError'
 
 export function handleApiError(error: unknown): NextResponse {
-  if (error instanceof AlphaVantageError) {
+  if (error instanceof MarketError) {
     if (error.code === 'RATE_LIMIT') {
       return NextResponse.json({ error: error.message, code: 'RATE_LIMIT', retryAfter: 60 }, { status: 429 })
     }
