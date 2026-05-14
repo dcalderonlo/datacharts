@@ -59,12 +59,6 @@ export default function RootPage() {
         </div>
       </section>
 
-      {/* Ad placeholder */}
-      <section className="max-w-4xl mx-auto px-6 pb-16">
-        <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/50 h-20 flex items-center justify-center">
-          <span className="text-xs text-gray-600 uppercase tracking-widest">Advertisement</span>
-        </div>
-      </section>
     </div>
   )
 }
