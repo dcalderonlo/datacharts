@@ -1,76 +1,141 @@
-# dataCharts — Enterprise Dashboard
+# dataCharts
 
-## Prerequisites
+A production-grade financial dashboard built to demonstrate real-world engineering decisions: clean architecture, type safety, authentication, CI/CD, and observability.
 
-- Node.js 20+
-- Docker & Docker Compose
-- PostgreSQL 16 (or use the Docker Compose setup)
+**Live demo:** https://datacharts.vercel.app
 
-## Local Setup
+---
+
+## What it does
+
+- Real-time stock quotes, market indices, and volatility data via **Finnhub**
+- Watchlist, price alerts with email/push notifications, and exportable reports
+- Full authentication flow (register, login, session management)
+- Automated alert checks via a cron job
+
+---
+
+## Tech stack
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 16 (App Router, React 19) |
+| Language | TypeScript 6 (`strict`, `exactOptionalPropertyTypes`) |
+| Styling | Tailwind CSS 4 + Framer Motion |
+| State | Zustand 5 (SSR-safe factory pattern) |
+| Auth | Auth.js v5 beta — Credentials provider, JWE sessions, Edge-safe middleware |
+| Database | PostgreSQL + Prisma 7 (local Docker / Prisma Postgres on Vercel) |
+| Testing | Vitest + React Testing Library + Playwright (E2E) + MSW |
+| CI/CD | GitHub Actions → Docker (GHCR) → Vercel |
+
+---
+
+## Architecture
+
+The project follows **Hexagonal Architecture** (ports & adapters):
+
+```
+src/
+├── core/
+│   ├── domain/          # Entities, ports (interfaces), domain errors
+│   └── use-cases/       # Business logic — no framework dependencies
+├── infrastructure/
+│   ├── finnhub/         # Finnhub adapter (client, mappers, errors)
+│   ├── alpha-vantage/   # Alpha Vantage adapter (kept for reference)
+│   ├── repositories/    # Provider switch — one line to swap adapters
+│   └── db/              # Prisma client
+├── ui/                  # Atomic Design: atoms → molecules → organisms → templates
+│   └── atoms | molecules | organisms | templates
+├── store/               # Zustand slices (market, watchlist, notifications)
+└── app/                 # Next.js App Router (pages + API routes)
+```
+
+### Key decisions
+
+**Provider-neutral error model**
+
+Each infrastructure adapter translates its own errors into a domain-level `MarketError`. API routes only know about `MarketError` — switching providers requires zero changes to the HTTP layer.
+
+```
+FinnhubClient      →  throws FinnhubError
+FinnhubMarketAdapter  →  catches, rethrows as MarketError
+handleApiError     →  handles MarketError only
+```
+
+**Adapter swap in one line**
+
+```ts
+// src/infrastructure/repositories/MarketRepository.ts
+export function createMarketRepository(): IMarketRepository {
+  return new FinnhubMarketAdapter() // swap to AlphaVantageMarketAdapter() to revert
+}
+```
+
+**Edge-safe authentication**
+
+Auth.js v5 with JWE-encrypted sessions. The middleware decrypts sessions using native Web Crypto API (HKDF) instead of Node.js crypto — required for Vercel Edge Runtime.
+
+**SSR-safe Zustand**
+
+State stores use a factory pattern to prevent hydration mismatches. Each server request gets a fresh store instance; the client reuses the singleton.
+
+**`exactOptionalPropertyTypes: true`**
+
+TypeScript is configured at maximum strictness. Optional fields must be omitted entirely — assigning `undefined` is a type error. This surfaces real data-shape mismatches at compile time.
+
+---
+
+## Testing strategy
+
+| Type | Tool | Coverage |
+|---|---|---|
+| Unit | Vitest + RTL | Domain, use-cases, mappers, UI components |
+| Integration | Vitest + MSW | API routes with mocked HTTP |
+| E2E | Playwright | Auth flow, dashboard navigation |
 
 ```bash
-# 1. Clone the repo
-git clone <repo-url>
-cd dataCharts
+npm run test          # unit + integration
+npm run test:e2e      # Playwright
+```
 
-# 2. Copy and fill environment variables
+---
+
+## CI/CD pipeline
+
+Every PR runs: **type check → lint → test → build → E2E → CodeQL security scan**
+
+Merges to `main` additionally: **Docker build → push to GHCR → Trivy image scan → deploy to Vercel**
+
+---
+
+## Local setup
+
+**Prerequisites:** Node.js 20+, Docker
+
+```bash
+# 1. Clone and install
+git clone https://github.com/dcalderonlo/datacharts.git
+cd datacharts
+npm install
+
+# 2. Environment variables
 cp .env.local.example .env.local
-# Edit .env.local with your values
+# Fill in: DATABASE_URL, AUTH_SECRET, FINNHUB_API_KEY
 
-# 3. Start services
+# 3. Start database and run migrations
 docker compose up db -d
-```
-
-## Database Migration
-
-```bash
 npx prisma migrate dev
+
+# 4. Run
+npm run dev
 ```
 
-## Environment Variables
-
-### `.env.local` (local development)
+### Environment variables
 
 | Variable | Description |
 |---|---|
 | `DATABASE_URL` | PostgreSQL connection string |
-| `NEXTAUTH_URL` | App URL (e.g. `http://localhost:3000`) |
-| `NEXTAUTH_SECRET` | Random secret string |
-| `ALPHA_VANTAGE_API_KEY` | Alpha Vantage API key for market data |
-
-## CI/CD
-
-The GitHub Actions pipeline (`.github/workflows/ci.yml`) runs on every push/PR to `main`:
-
-1. **quality** — type check, lint, build
-2. **docker** — build & push image to GitHub Container Registry (main branch only)
-3. **deploy** — deploy to Vercel (main branch only)
-
-### Required GitHub Secrets
-
-| Secret | Description |
-|---|---|
-| `VERCEL_TOKEN` | Vercel personal access token |
-| `VERCEL_ORG_ID` | Vercel organization ID |
-| `VERCEL_PROJECT_ID` | Vercel project ID |
-
-### Vercel Environment Variables
-
-Set these in your Vercel project dashboard:
-
-| Variable | Description |
-|---|---|
-| `ALPHA_VANTAGE_API_KEY` | Alpha Vantage API key |
-| `DATABASE_URL` | Neon (or other) PostgreSQL connection string |
-| `NEXTAUTH_SECRET` | Strong random secret |
-| `NEXTAUTH_URL` | Production URL (e.g. `https://yourdomain.vercel.app`) |
-
-## Docker
-
-```bash
-# Build image locally
-docker build -t datacharts .
-
-# Run with Docker Compose (includes Postgres)
-docker compose up --build
-```
+| `AUTH_SECRET` | Random secret for session encryption |
+| `AUTH_URL` | App URL (e.g. `http://localhost:3000`) |
+| `FINNHUB_API_KEY` | [Finnhub](https://finnhub.io) API key (free tier works) |
+| `CRON_SECRET` | Secret header for the price alert cron endpoint |
