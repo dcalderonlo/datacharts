@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Group by symbol — one API call per unique symbol
-  const symbols = Array.from(new Set(alerts.map((a) => a.symbol)))
+  const symbols = Array.from(new Set(alerts.map((a: { symbol: string }) => a.symbol)))
   const prices: Record<string, number> = {}
 
   for (const symbol of symbols) {
