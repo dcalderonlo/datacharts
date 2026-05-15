@@ -47,6 +47,7 @@ export function SymbolAutocomplete({
   )
 
   function handleSelect(symbol: string) {
+    if (timerRef.current) clearTimeout(timerRef.current)
     onSelect(symbol)
     clearSearchResults()
     setInputValue('')
@@ -57,6 +58,7 @@ export function SymbolAutocomplete({
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       e.preventDefault()
+      if (timerRef.current) clearTimeout(timerRef.current)
       if (isOpen && activeIndex >= 0 && searchResults[activeIndex]) {
         handleSelect(searchResults[activeIndex].symbol)
       } else {
