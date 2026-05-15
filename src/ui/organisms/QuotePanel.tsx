@@ -1,6 +1,6 @@
 'use client'
 import { useAppStore } from '@/ui/providers/StoreProvider'
-import { SearchBar } from '@/ui/molecules/SearchBar'
+import { SymbolAutocomplete } from '@/ui/molecules/SymbolAutocomplete'
 import { MetricCard } from '@/ui/molecules/MetricCard'
 import { AlertBanner } from '@/ui/molecules/AlertBanner'
 import { StatNumber } from '@/ui/atoms/StatNumber'
@@ -19,7 +19,7 @@ export function QuotePanel() {
 
   return (
     <div className="flex flex-col gap-4">
-      <SearchBar onSearch={fetchQuote} placeholder="Search symbol (e.g. AAPL)" isLoading={isLoadingQuote} />
+      <SymbolAutocomplete onSelect={fetchQuote} placeholder="Search symbol (e.g. AAPL)" isLoading={isLoadingQuote} />
 
       {error && <AlertBanner message={error} type="error" />}
 

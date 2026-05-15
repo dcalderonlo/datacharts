@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { SearchBar } from '@/ui/molecules/SearchBar'
+import { SymbolAutocomplete } from '@/ui/molecules/SymbolAutocomplete'
 import { AlertBanner } from '@/ui/molecules/AlertBanner'
 
 const MAX_ANON_SEARCHES = 3
@@ -76,7 +76,7 @@ export function LandingSearch() {
 
   return (
     <div className="max-w-md mx-auto space-y-3">
-      <SearchBar onSearch={handleSearch} isLoading={loading} placeholder="Search a symbol (e.g. AAPL)…" />
+      <SymbolAutocomplete onSelect={handleSearch} isLoading={loading} placeholder="Search a symbol (e.g. AAPL)…" />
 
       {!limitReached && count > 0 && (
         <p className="text-xs text-gray-500 text-center">{count} of {MAX_ANON_SEARCHES} free searches used</p>
