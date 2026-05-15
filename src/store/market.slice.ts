@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand'
 import type { Quote } from '@/core/domain/entities/Quote'
 import type { MarketIndex } from '@/core/domain/entities/MarketIndex'
+import type { SymbolSearchResult } from '@/core/domain/entities/SymbolSearchResult'
 
 export interface MarketSlice {
   quotes: Record<string, Quote>
@@ -8,16 +9,28 @@ export interface MarketSlice {
   isLoadingQuote: boolean
   isLoadingIndices: boolean
   error: string | null
+  searchResults: SymbolSearchResult[]
+  isLoadingSearch: boolean
+  searchError: string | null
+  searchCache: Map<string, SymbolSearchResult[]>
+  searchAbortController: AbortController | null
   fetchQuote: (symbol: string) => Promise<void>
   fetchIndices: () => Promise<void>
+  searchSymbols: (query: string) => Promise<void>
+  clearSearchResults: () => void
 }
 
-export const createMarketSlice: StateCreator<MarketSlice> = (set) => ({
+export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
   quotes: {},
   indices: [],
   isLoadingQuote: false,
   isLoadingIndices: false,
   error: null,
+  searchResults: [],
+  isLoadingSearch: false,
+  searchError: null,
+  searchCache: new Map(),
+  searchAbortController: null,
   fetchQuote: async (symbol) => {
     set({ isLoadingQuote: true, error: null })
     try {
@@ -39,5 +52,46 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set) => ({
     } catch (e) {
       set({ error: e instanceof Error ? e.message : 'Unknown error', isLoadingIndices: false })
     }
+  },
+  searchSymbols: async (query) => {
+    const { searchAbortController, searchCache } = get()
+    // Abort previous request
+    if (searchAbortController) {
+      searchAbortController.abort()
+    }
+    // Check cache
+    const cached = searchCache.get(query)
+    if (cached) {
+      set({ searchResults: cached, searchError: null })
+      return
+    }
+    const controller = new AbortController()
+    set({ isLoadingSearch: true, searchError: null, searchAbortController: controller })
+    try {
+      const res = await fetch(`/api/market/search?q=${encodeURIComponent(query)}`, {
+        signal: controller.signal,
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error)
+      const results: SymbolSearchResult[] = json.data
+      // Update cache with LRU eviction (max 20)
+      const cache = get().searchCache
+      if (cache.size >= 20) {
+        const firstKey = cache.keys().next().value
+        if (firstKey !== undefined) cache.delete(firstKey)
+      }
+      cache.set(query, results)
+      set({ searchResults: results, isLoadingSearch: false, searchAbortController: null })
+    } catch (e) {
+      if (e instanceof DOMException && e.name === 'AbortError') return
+      set({
+        searchError: e instanceof Error ? e.message : 'Unknown error',
+        isLoadingSearch: false,
+        searchAbortController: null,
+      })
+    }
+  },
+  clearSearchResults: () => {
+    set({ searchResults: [], searchError: null })
   },
 })
