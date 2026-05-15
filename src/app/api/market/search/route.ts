@@ -4,6 +4,8 @@ import { z } from 'zod'
 import { createMarketRepository } from '@/infrastructure/repositories/MarketRepository'
 import { SearchSymbols } from '@/core/use-cases/SearchSymbols'
 import { handleApiError } from '../../_lib/errorResponse'
+import { isMockMode } from '@/infrastructure/mock/isMockMode'
+import { mockSymbolSearch, defaultMockSymbolSearch } from '@/infrastructure/mock/fixtures'
 
 const querySchema = z.object({
   q: z.string().trim().min(3).max(50),
@@ -25,6 +27,11 @@ export async function GET(request: NextRequest) {
   }
 
   const normalizedQ = parsed.data.q.toUpperCase()
+
+  if (isMockMode()) {
+    const data = mockSymbolSearch[normalizedQ] ?? defaultMockSymbolSearch
+    return NextResponse.json({ data })
+  }
 
   try {
     const getCachedResults = unstable_cache(

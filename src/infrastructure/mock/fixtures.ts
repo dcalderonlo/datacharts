@@ -2,6 +2,7 @@ import type { Quote } from '@/core/domain/entities/Quote'
 import type { MarketIndex } from '@/core/domain/entities/MarketIndex'
 import type { CompanyProfile } from '@/core/domain/entities/CompanyProfile'
 import type { VolatilityData } from '@/core/domain/entities/VolatilityData'
+import type { SymbolSearchResult } from '@/core/domain/entities/SymbolSearchResult'
 
 export const mockQuotes: Record<string, Quote> = {
   AAPL: {
@@ -154,3 +155,18 @@ export const defaultMockVolatility: VolatilityData = {
   fiftyTwoWeekHigh: 0,
   fiftyTwoWeekLow: 0,
 }
+
+export const mockSymbolSearch: Record<string, SymbolSearchResult[]> = {
+  AAPL: [{ symbol: 'AAPL', description: 'Apple Inc.', type: 'Common Stock' }],
+  APPLE: [{ symbol: 'AAPL', description: 'Apple Inc.', type: 'Common Stock' }],
+  GOOGL: [{ symbol: 'GOOGL', description: 'Alphabet Inc.', type: 'Common Stock' }],
+  GOOGLE: [{ symbol: 'GOOGL', description: 'Alphabet Inc.', type: 'Common Stock' }],
+  MSFT: [{ symbol: 'MSFT', description: 'Microsoft Corporation', type: 'Common Stock' }],
+  MICROSOFT: [{ symbol: 'MSFT', description: 'Microsoft Corporation', type: 'Common Stock' }],
+  TSLA: [{ symbol: 'TSLA', description: 'Tesla, Inc.', type: 'Common Stock' }],
+  TESLA: [{ symbol: 'TSLA', description: 'Tesla, Inc.', type: 'Common Stock' }],
+  AMZN: [{ symbol: 'AMZN', description: 'Amazon.com Inc.', type: 'Common Stock' }],
+  AMAZON: [{ symbol: 'AMZN', description: 'Amazon.com Inc.', type: 'Common Stock' }],
+}
+
+export const defaultMockSymbolSearch: SymbolSearchResult[] = []
