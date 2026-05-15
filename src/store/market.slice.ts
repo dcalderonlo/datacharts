@@ -76,15 +76,19 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
       if (!res.ok) throw new Error(json.error)
       const results: SymbolSearchResult[] = json.data
       // Update cache with FIFO eviction (max 20; hits do not refresh recency)
-      const cache = get().searchCache
-      if (cache.size >= 20) {
-        const firstKey = cache.keys().next().value
-        if (firstKey !== undefined) cache.delete(firstKey)
+      const prevCache = get().searchCache
+      const nextCache = new Map(prevCache)
+      if (nextCache.size >= 20) {
+        const firstKey = nextCache.keys().next().value
+        if (firstKey !== undefined) nextCache.delete(firstKey)
       }
-      cache.set(normalizedQuery, results)
-      set({ searchResults: results, isLoadingSearch: false, searchAbortController: null })
+      nextCache.set(normalizedQuery, results)
+      set({ searchResults: results, isLoadingSearch: false, searchAbortController: null, searchCache: nextCache })
     } catch (e) {
-      if (e instanceof DOMException && e.name === 'AbortError') return
+      if (e instanceof Error && e.name === 'AbortError') {
+        set({ isLoadingSearch: false, searchAbortController: null })
+        return
+      }
       set({
         searchError: e instanceof Error ? e.message : 'Unknown error',
         isLoadingSearch: false,
