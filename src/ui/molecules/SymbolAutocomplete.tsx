@@ -33,7 +33,7 @@ export function SymbolAutocomplete({
       setActiveIndex(-1)
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = setTimeout(() => {
-        const trimmed = value.trim()
+        const trimmed = value.trim().toUpperCase()
         if (trimmed.length >= 3) {
           searchSymbols(trimmed)
           setIsOpen(true)
@@ -55,17 +55,29 @@ export function SymbolAutocomplete({
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (isOpen && activeIndex >= 0 && searchResults[activeIndex]) {
+        handleSelect(searchResults[activeIndex].symbol)
+      } else {
+        const trimmed = inputValue.trim().toUpperCase()
+        if (trimmed.length > 0) {
+          onSelect(trimmed)
+          clearSearchResults()
+          setInputValue('')
+          setIsOpen(false)
+          setActiveIndex(-1)
+        }
+      }
+      return
+    }
     if (!isOpen) return
     if (e.key === 'ArrowDown') {
       e.preventDefault()
-      setActiveIndex((i) => Math.min(i + 1, searchResults.length - 1))
+      setActiveIndex((i) => searchResults.length === 0 ? -1 : Math.min(i + 1, searchResults.length - 1))
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
-      setActiveIndex((i) => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter') {
-      if (activeIndex >= 0 && searchResults[activeIndex]) {
-        handleSelect(searchResults[activeIndex].symbol)
-      }
+      setActiveIndex((i) => searchResults.length === 0 ? -1 : Math.max(i - 1, 0))
     } else if (e.key === 'Escape') {
       setIsOpen(false)
       setActiveIndex(-1)

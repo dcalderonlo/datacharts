@@ -54,13 +54,14 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
     }
   },
   searchSymbols: async (query) => {
+    const normalizedQuery = query.trim().toUpperCase()
     const { searchAbortController, searchCache } = get()
     // Abort previous request
     if (searchAbortController) {
       searchAbortController.abort()
     }
     // Check cache
-    const cached = searchCache.get(query)
+    const cached = searchCache.get(normalizedQuery)
     if (cached) {
       set({ searchResults: cached, searchError: null, isLoadingSearch: false, searchAbortController: null })
       return
@@ -68,7 +69,7 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
     const controller = new AbortController()
     set({ isLoadingSearch: true, searchError: null, searchAbortController: controller })
     try {
-      const res = await fetch(`/api/market/search?q=${encodeURIComponent(query)}`, {
+      const res = await fetch(`/api/market/search?q=${encodeURIComponent(normalizedQuery)}`, {
         signal: controller.signal,
       })
       const json = await res.json()
@@ -80,7 +81,7 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
         const firstKey = cache.keys().next().value
         if (firstKey !== undefined) cache.delete(firstKey)
       }
-      cache.set(query, results)
+      cache.set(normalizedQuery, results)
       set({ searchResults: results, isLoadingSearch: false, searchAbortController: null })
     } catch (e) {
       if (e instanceof DOMException && e.name === 'AbortError') return
@@ -92,6 +93,10 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
     }
   },
   clearSearchResults: () => {
-    set({ searchResults: [], searchError: null })
+    const { searchAbortController } = get()
+    if (searchAbortController) {
+      searchAbortController.abort()
+    }
+    set({ searchResults: [], searchError: null, isLoadingSearch: false, searchAbortController: null })
   },
 })
