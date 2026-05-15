@@ -81,3 +81,24 @@ export async function fetchVolatility(symbol: string): Promise<RawResponse> {
   }
   return data
 }
+
+export type RawFinnhubSymbolSearchItem = {
+  symbol?: string
+  description?: string
+  type?: string
+}
+
+export type RawFinnhubSymbolSearchResponse = {
+  count?: number
+  result?: RawFinnhubSymbolSearchItem[]
+}
+
+export async function fetchSymbolSearch(query: string): Promise<RawFinnhubSymbolSearchResponse> {
+  const data = await fetchFromFinnhub('/search', { q: query })
+
+  if (!Array.isArray(data['result'])) {
+    throw new FinnhubError('UPSTREAM_ERROR', 'Unexpected response shape from Finnhub /search')
+  }
+
+  return data as unknown as RawFinnhubSymbolSearchResponse
+}

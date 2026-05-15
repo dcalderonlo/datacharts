@@ -3,6 +3,7 @@ import type { Quote } from '@/core/domain/entities/Quote'
 import type { MarketIndex } from '@/core/domain/entities/MarketIndex'
 import type { CompanyProfile } from '@/core/domain/entities/CompanyProfile'
 import type { VolatilityData } from '@/core/domain/entities/VolatilityData'
+import type { SymbolSearchResult } from '@/core/domain/entities/SymbolSearchResult'
 import { MarketError } from '@/core/domain/errors/MarketError'
 import {
   fetchQuote,
@@ -58,5 +59,9 @@ export class AlphaVantageMarketAdapter implements IMarketRepository {
     } catch (error) {
       toMarketError(error)
     }
+  }
+
+  async searchSymbols(_query: string): Promise<SymbolSearchResult[]> {
+    throw new MarketError('UPSTREAM_ERROR', 'Symbol search not supported by this provider')
   }
 }

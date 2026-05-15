@@ -21,6 +21,7 @@ const mockRepository: IMarketRepository = {
   getIndices: vi.fn(),
   getCompanyProfile: vi.fn(),
   getVolatility: vi.fn(),
+  searchSymbols: vi.fn(),
 }
 
 describe('GetRealTimeQuote', () => {
