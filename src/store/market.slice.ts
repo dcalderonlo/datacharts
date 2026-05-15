@@ -62,7 +62,7 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
     // Check cache
     const cached = searchCache.get(query)
     if (cached) {
-      set({ searchResults: cached, searchError: null })
+      set({ searchResults: cached, searchError: null, isLoadingSearch: false, searchAbortController: null })
       return
     }
     const controller = new AbortController()
@@ -74,7 +74,7 @@ export const createMarketSlice: StateCreator<MarketSlice> = (set, get) => ({
       const json = await res.json()
       if (!res.ok) throw new Error(json.error)
       const results: SymbolSearchResult[] = json.data
-      // Update cache with LRU eviction (max 20)
+      // Update cache with FIFO eviction (max 20; hits do not refresh recency)
       const cache = get().searchCache
       if (cache.size >= 20) {
         const firstKey = cache.keys().next().value

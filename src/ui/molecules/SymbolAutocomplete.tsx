@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useState, useCallback, type KeyboardEvent } from 'react'
 import { useAppStore } from '@/ui/providers/StoreProvider'
 import { Spinner } from '@/ui/atoms/Spinner'
 
@@ -54,7 +54,7 @@ export function SymbolAutocomplete({
     setActiveIndex(-1)
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (!isOpen) return
     if (e.key === 'ArrowDown') {
       e.preventDefault()
@@ -89,8 +89,7 @@ export function SymbolAutocomplete({
       if (timerRef.current) clearTimeout(timerRef.current)
       clearSearchResults()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [clearSearchResults])
 
   const showDropdown =
     isOpen && inputValue.trim().length >= 3
